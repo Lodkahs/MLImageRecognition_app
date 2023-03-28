@@ -57,8 +57,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                             //code
                             let confidenceLevel = (topResult?.confidence ?? 0) * 100
                             
+                            let rounded = (Int(confidenceLevel) * 100) / 100
                             
-                            self.resultLabel.text = "\(confidenceLevel)% it's \(topResult?.identifier)"
+                            
+                            self.resultLabel.text = "\(rounded)% it's \(topResult!.identifier)"
                         }
                     }
                     
@@ -66,7 +68,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 }
             }
             
+            let handler = VNImageRequestHandler(ciImage: image)
+            DispatchQueue.global(qos: .userInteractive).async {
+                do {
+                    try handler.perform([request])
+                    
+                } catch {
+                    print("error")
+                }
+            }
+            
         }
+        
+        
         
     }
 }
